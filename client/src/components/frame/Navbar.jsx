@@ -26,7 +26,7 @@ function Navbar(props){
   <a className="navbar-brand col-sm-3 col-md-2 mr-0" href=" ">Proctor</a>
   <ul className="navbar-nav px-3">
     <Link to="/" className="nav-item text-nowrap" onClick={lockOut}>
-      <span className="nav-link">Sign out</span>
+      <span className="nav-link">{props.loggedIn ? "Sign out" : "Sign up"}</span>
     </Link>
   </ul>
 </nav>

@@ -35,7 +35,7 @@ function App() {
       return (
         <React.Fragment>
           {user.loggedIn ? <Redirect to="/"/> : <Redirect to="/login"/>}
-        <Navbar updateUser={logState} currentUser={user.username}/>
+        <Navbar updateUser={logState} loggedIn={user.loggedIn}/>
         <Switch>
           <Route exact path="/" component={Dashboard}/>
           <Route path="/calendar" component={Calendar}/>
