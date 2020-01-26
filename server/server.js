@@ -10,6 +10,7 @@ const port = process.env.PORT || 4000;
 
 //Get the files that specify the routes we're using
 const auth = require('./routes/auth');
+const course = require('./routes/course');
 
 //MIDDLEWARE - data requests passes through these packages in order to be read
 app.use(bodyParser.urlencoded({extended: false})); //reading incoming
@@ -33,6 +34,7 @@ app.use(passport.session()) //helps to trigger deserializeUser
 
 //Routes that the client needs to use to access server Routes
 app.use('/authenticate', auth);
+app.use('/catalog', course);
 
 app.listen(port, () => {
     console.log('Connected to port ' + port)

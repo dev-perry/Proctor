@@ -7,7 +7,10 @@ mongoose.promise = Promise;
 
 const userSchema = new Schema({
   username: {type: String, unique: true, required: true},
-  password: {type: String, unique: false, required: true}
+  password: {type: String, unique: false, required: true},
+  fname: {type: String, unique: false, required: true},
+  lname: {type: String, unique: false, required: true},
+  permission: {type: Number, unique: false, required: true}
 });
 
 //methods that can be used for this schema

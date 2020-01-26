@@ -21,10 +21,10 @@ function LogIn(props) {
       username: user,
       password: pass
     }).then(res => { //this is what should happen when the server sends a response
-      console.log('Server response');
+      console.log('SERVER RESPONSE:');
       console.log(res);
       if (res.status === 200) {
-        props.updateUser({loggedIn: true, username: res.data.username});
+        props.getUser();
       }
 
     }).catch(err => {

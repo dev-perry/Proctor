@@ -6,7 +6,7 @@ const passport = require('../passport'); //accesses the functions outlined in th
 router.post('/', function(req, res) {
   //This is how we sign a user up
 
-  const {username, password} = req.body; //grabbing the user and pass from the object we get
+  const {username, password, permission} = req.body; //grabbing the user and pass from the object we get
 
   User.findOne({
     username: username
@@ -38,8 +38,8 @@ router.post('/login', passport.authenticate('local'), function(req, res) {
 });
 
 router.get('/', (req, res, next) => {
-    console.log('===== user!!======')
-    console.log(req.user)
+    // console.log('===== user!!======')
+    // console.log(req.user)
     if (req.user) {
         res.json({ user: req.user })
     } else {

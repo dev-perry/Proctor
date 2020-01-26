@@ -12,7 +12,8 @@ function Navbar(props){
       if(res.data.message === "Logging out"){
         props.updateUser({
           loggedIn: false,
-          username: null
+          username: null,
+          uid: null
         });
       }
     }).catch(err =>{
