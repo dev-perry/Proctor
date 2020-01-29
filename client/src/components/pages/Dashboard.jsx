@@ -1,10 +1,10 @@
-import React from 'react';
+ import React from 'react';
 import '../../styles/pages/Dashboard.css';
 import NotificationCenter from '../blocks/NotificationCenter.jsx';
 import DueToday from '../blocks/DueToday.jsx';
 import ClassDeck from '../blocks/ClassDeck.jsx';
 
-function Dashboard() {
+function Dashboard(props) {
   return (
   <React.Fragment>
         <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
@@ -19,7 +19,7 @@ function Dashboard() {
               <DueToday/>
             </div>
           </div>
-          <ClassDeck/>
+          <ClassDeck userID={props.userID}/>
         </main>
   </React.Fragment>)
 }
