@@ -30,7 +30,7 @@ router.post('/', function(req, res) {
 //Get basic course data on ALL courses student is registered for
 router.get('/courses/:userid', function(req,res){
     const uid = req.params.userid;
-    Course.find({'students._id': uid}, 'name course_id', function(err, docs){
+    Course.find({'students._id': uid}, 'name course_id instructor', function(err, docs){
       if(err){
         res.send(err);
       }else{
