@@ -1,34 +1,27 @@
-import React from "react";
-import '../../styles/blocks/ClassDeck.css';
+import React, {useState, useEffect} from "react";
+import axios from 'axios';
+import DClassCard from '../elements/DClassCard.jsx';
 
-function ClassDeck(){
+
+function ClassDeck(props){
+  const [courses, getCourses] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:4000/catalog/courses/' + props.userID)
+        .then(res => {
+          if(res){
+            getCourses(res.data);
+          }else{
+            console.log('Get has failed');
+          }
+        })
+  },[])
   return(
     <div className="row">
       <div className="col">
-        <div className="card bg-light border-secondary class-card">
-          <div className="card-body">
-            <h5 className="card-title">Anatomy & Physiology</h5>
-            <p className="card-text">Dr. Anthony Russo</p>
-          </div>
-        </div>
-        <div className="card bg-light border-secondary class-card">
-          <div className="card-body">
-            <h5 className="card-title">Endocrinology</h5>
-            <p className="card-text">Dr. Christina McKittrick</p>
-          </div>
-        </div>
-        <div className="card bg-light border-secondary class-card">
-          <div className="card-body">
-            <h5 className="card-title">Pathophysiology</h5>
-            <p className="card-text">Dr. Anthony Russo</p>
-          </div>
-        </div>
-        <div className="card bg-light border-secondary class-card">
-          <div className="card-body">
-            <h5 className="card-title">Statistics</h5>
-            <p className="card-text">Dr. Steven Kass</p>
-          </div>
-        </div>
+      { courses.map((element, index) =>{
+        return(<DClassCard key={element._id} name={element.name} instructor={element.instructor} iD={element.course_id}/>)
+      })}
         </div>
       </div>
   )
