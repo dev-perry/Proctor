@@ -6,8 +6,10 @@ import ClassLink from '../elements/ClassLink.jsx';
 
 axios.defaults.withCredentials = true;
 
+
 function Sidebar(props){
   const [courses, getCourses] = useState([]);
+
   useEffect(() => {
     axios.get('http://localhost:4000/catalog/courses/' + props.userID)
         .then(res => {
@@ -18,6 +20,7 @@ function Sidebar(props){
           }
         })
   },[])
+
   return(
     <nav className="col-md-2 d-none d-md-block bg-light sidebar">
       <div className="sidebar-sticky">
