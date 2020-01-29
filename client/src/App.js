@@ -1,14 +1,13 @@
 import React, { useEffect, useState} from 'react';
-import {Route, Switch, Redirect} from 'react-router-dom';
+import {Route, Redirect, Switch} from 'react-router-dom';
 import axios from 'axios';
 import './styles/App.css';
+import AppFrame from './components/frame/AppFrame.jsx';
 import Dashboard from './components/pages/Dashboard.jsx';
 import Calendar from './components/pages/Calendar.jsx';
 import Grades from './components/pages/Grades.jsx';
 import Class from './components/pages/Class.jsx';
-import Navbar from './components/frame/Navbar.jsx';
 import LogIn from './components/pages/LogIn.jsx';
-import Sidebar from './components/frame/Sidebar.jsx';
 
 
 axios.defaults.withCredentials = true;
@@ -36,23 +35,19 @@ function getUser(){
       console.log("log state has been called");
     }
 
+
       return (
-        <React.Fragment>
-          {user.loggedIn ? <Redirect to="/"/> : <Redirect to="/login"/>}
-        <Navbar updateUser={logState} loggedIn={user.loggedIn}/>
-        <div className="container-fluid">
-          <div className="row">
-        {user.loggedIn && <Sidebar userID = {user.uid}/>}
         <Switch>
-          <Route exact path="/"><Dashboard/></Route>
-          <Route path="/calendar"><Calendar/></Route>
-          <Route path="/grades"><Grades/></Route>
-          <Route path="/class/:id" render={(props) => <Class {...props} userID={user.uid} />}/>
-          <Route path="/login"><LogIn getUser={getUser}/></Route>
+          <AppFrame user={user} logState={logState}>
+            {user.loggedIn ? <Redirect to="/"/> : <Redirect to="/login"/>}
+            <Route exact path="/calendar"><Calendar/></Route>
+            <Route exact path="/grades"><Grades/></Route>
+            <Route exact path="/class/:id" render={(props) => <Class {...props} userID={user.uid} />}/>
+            <Route exact path="/login"><LogIn getUser={getUser}/></Route>
+            <Route exact path="/"><Dashboard userID={user.uid}/></Route>
+            </AppFrame>
         </Switch>
-      </div>
-    </div>
-      </React.Fragment>);
+        );
 
   }
 
