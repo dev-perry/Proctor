@@ -1,11 +1,19 @@
 import React, {useState, useEffect} from 'react';
 import '../../styles/pages/Class.css';
+import CourseInfo from '../elements/CourseInfo.jsx';
 import axios from 'axios';
 axios.defaults.withCredentials = true;
+
+var catalog;
 
 function Class(props) {
   let courseID = props.match.params;
   const [course, getCourse] = useState({});
+  const [cModal, setShow] = useState(false);
+
+  function handleClick(){
+    setShow(!cModal);
+  }
 
 //get course data for target course
 useEffect(() => {
@@ -14,6 +22,7 @@ useEffect(() => {
         .then(res => {
           if(res){
             getCourse(res.data);
+            catalog = res.data;
           }else{
             console.log('Request denied');
           }
@@ -23,11 +32,12 @@ useEffect(() => {
 }, [courseID]);//monitors for changes in courseID object
 
   return (<React.Fragment>
+    {cModal && <CourseInfo modal={cModal} modalShow={handleClick} info={course}/>}
         <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
           <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 className="h2">{course.name}</h1>
             <div className="btn-group mr-2">
-              <button type="button" className="btn btn-sm btn-outline-secondary">Course Info</button>
+              <button type="button" className="btn btn-sm btn-outline-secondary" onClick={handleClick}>Course Info</button>
               <button type="button" className="btn btn-sm btn-outline-secondary">Attendance Record</button>
             </div>
             </div>
@@ -70,3 +80,4 @@ useEffect(() => {
 }
 
 export default Class;
+export {catalog};
