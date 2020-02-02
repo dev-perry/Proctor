@@ -10,7 +10,8 @@ const userSchema = new Schema({
   password: {type: String, unique: false, required: true},
   fname: {type: String, unique: false, required: true},
   lname: {type: String, unique: false, required: true},
-  permission: {type: Number, unique: false, required: true}
+  permission: {type: Number, unique: false, required: true},
+  courses: {type:[Number], unique: false, required: false}
 });
 
 //methods that can be used for this schema
