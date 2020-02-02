@@ -21,11 +21,10 @@ function getUser(){
   axios.get('http://localhost:4000/authenticate/')
       .then(res => {
         if(res.data.user){
-          // console.log(res.data.user);
           updateUser({loggedIn: true, username: res.data.user.username, uid: res.data.user._id});
         }else{
           console.log('Get user: no user');
-          updateUser({loggedIn: false, username: null, uid: null})
+          updateUser({loggedIn: false, username: null, uid: null});
         }
       })
 }
@@ -40,7 +39,7 @@ function getUser(){
         <Switch>
           <AppFrame user={user} logState={logState}>
             {user.loggedIn ? <Redirect to="/"/> : <Redirect to="/login"/>}
-            <Route exact path="/calendar"><Calendar/></Route>
+            <Route exact path="/calendar"><Calendar userID={user.uid}/></Route>
             <Route exact path="/grades"><Grades/></Route>
             <Route exact path="/class/:id" render={(props) => <Class {...props} userID={user.uid} />}/>
             <Route exact path="/login"><LogIn getUser={getUser}/></Route>
