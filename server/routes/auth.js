@@ -37,6 +37,7 @@ router.post('/login', passport.authenticate('local'), function(req, res) {
   res.send(userInfo);//fires back info object after successful login
 });
 
+//return user from session if one currently exists
 router.get('/', (req, res, next) => {
     // console.log('===== user!!======')
     // console.log(req.user)
@@ -47,6 +48,7 @@ router.get('/', (req, res, next) => {
     }
 })
 
+//logout
 router.post('/logout', function(req, res) {
   if (req.user) {
     req.logout()//fire logout only if user object is passed
