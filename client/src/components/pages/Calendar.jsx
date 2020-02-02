@@ -1,7 +1,38 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import CalendarDeck from '../blocks/CalendarDeck.jsx';
 import '../../styles/pages/Calendar.css';
+import axios from 'axios';
 
-function Calendar() {
+axios.defaults.withCredentials = true;
+
+function Calendar(props) {
+  const [aments, setAments] = useState();
+  useEffect(()=>{
+    axios.get('http://localhost:4000/assignment/calendar/'+ props.userID)
+    .then(res => {
+      if(res){
+        setAments(res.data);
+      }else{
+        console.log("No data received");
+      }
+    })
+  },[])
+
+//Below code block from: https://stackoverflow.com/questions/14446511/most-efficient-method-to-groupby-on-an-array-of-objects
+  function groupBy(list, keyGetter){
+  const map = new Map();//creating a new map object
+  list.forEach((item) => {//setting up a forEach wich uses a callback to accomplish something per each item in an array
+    const key = keyGetter(item);//takes in item in the array and returns back property specified in initial call, so if initial argument specified the .type property, it will set the key constant to the value associated with that property for the item within the array
+    const collection = map.get(key);//find a key in the map that has this value
+    if(!collection){//if the key does not exist, create it along with an array that includes the item
+      map.set(key,[item]);
+    }else{
+      collection.push(item)//if the key does exist add the item to that array in the map
+    }
+  });
+  return map; //return fully grouped map
+}
+
   return (
     <React.Fragment>
     <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
@@ -15,44 +46,9 @@ function Calendar() {
         </div>
       </div>
     </div>
-    <div className="card bg-light mb-3 calendar-card">
-      <div className="card-header card-title">
-        <h5>Thursday, January 23</h5>
-      </div>
-      <div className="list-group">
-        <a href=" " className="list-group-item list-group-item-action calendar-list-group-item"><h6><span className="badge badge-secondary">Pathophysiology
-        </span> Summary of paper by Dr. Rowe</h6></a>
-        <a href=" " className="list-group-item list-group-item-action calendar-list-group-item"><h6><span className="badge badge-secondary">Endocrinology
-        </span> Take Home Exam 3</h6></a>
-      </div>
-    </div>
-    <div className="card bg-light mb-3 calendar-card">
-      <div className="card-header card-title">
-        <h5>Monday, January 27</h5>
-      </div>
-      <div className="list-group">
-        <a href=" " className="list-group-item list-group-item-action calendar-list-group-item"><h6><span className="badge badge-secondary">Statistics
-        </span> Analysis of trends in stunted height</h6></a>
-        <a href=" " className="list-group-item list-group-item-action calendar-list-group-item"><h6><span className="badge badge-secondary">Anatomy & Physiology II
-        </span> Extra Credit: Immune Response Case-Study</h6></a>
-      </div>
-    </div>
-    <div className="card bg-light mb-3 calendar-card">
-      <div className="card-header card-title">
-        <h5>Friday, January 31</h5>
-      </div>
-      <div className="list-group">
-        <a href=" " className="list-group-item list-group-item-action calendar-list-group-item"><h6><span className="badge badge-secondary">Pathophysiology
-        </span> Assessment of night-time epileptic shocks</h6></a>
-        <a href=" " className="list-group-item list-group-item-action calendar-list-group-item"><h6><span className="badge badge-secondary">Anatomy & Physiology II
-        </span> Extra Credit: Cat Dissection Case Study</h6></a>
-        <a href=" " className="list-group-item list-group-item-action calendar-list-group-item"><h6><span className="badge badge-secondary">Statistics
-        </span> Submit final project here</h6></a>
-        <a href=" " className="list-group-item list-group-item-action calendar-list-group-item"><h6><span className="badge badge-secondary">Endocrinology
-        </span> Endotext Worksheet</h6></a>
-      </div>
-    </div>
+    {aments && <CalendarDeck data={groupBy(aments, ament => ament.due)}/>}
   </main>
-</React.Fragment>);
-}
+</React.Fragment>
+)}
+
 export default Calendar;
