@@ -4,7 +4,10 @@ mongoose.promise = Promise;
 
 //document structure
 const assignSchema =  new Schema({
-  course_id:{type: Number},
+  course:{
+    id: {type: Number, required: true},
+    name: {type: String, required: true}
+  },
   name:{type:String},
   type:{type:String},
   tags:{type:[String]},
