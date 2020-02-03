@@ -1,11 +1,9 @@
 const express = require('express');
 const router = express.Router(); //accesses router functions from express package
- //accesses models and functions
+//accesses models and functions
 const Assign = require('../database/models/assignment');
 const User = require('../database/models/user.js');
 const passport = require('../passport');
-
-
 
 //Create a new Assignment
 router.post('/', function(req, res) {
@@ -32,25 +30,51 @@ router.post('/', function(req, res) {
 
 //return the user's assignment calendar
 router.get('/calendar/:uid', function(req, res) {
-  User.findOne({_id:req.params.uid}, 'courses', function(err, docs){
-    if(err){
+if(req.isAuthenticated()){
+  User.findOne({
+    _id: req.params.uid
+  }, 'courses', function(err, docs) {
+    if (err) {
       return err;
-    }else{
+    } else {
       return docs;
     }
-  }).then((response)=>{//after getting courseID array from user object, match documents in assignment collection
-      Assign.find({'course.id':{$in:response.courses}, visible: true}, 'name due tags course', function(err, docs){
-        if(err){
-          res.json(err);
-        }else{
-          res.json(docs);
-        }
-      });
-  })
-  .catch(function(error){
+  }).then((response) => { //after getting courseID array from user object, match documents in assignment collection
+    Assign.find({
+      'course.id': {
+        $in: response.courses
+      },
+      visible: true
+    }, 'name due course', function(err, docs) {
+      if (err) {
+        res.json(err);
+      } else {
+        res.json(docs);
+      }
+    });
+  }).catch(function(error) {
     console.log('Error getting assignments:');
     console.log(error);
-  })
+  })}else{
+    res.send("Request denied");
+  }
+})
+
+//Return all(a) assignments for one course
+router.get('/:cuid', function(req, res) {
+  if (req.isAuthenticated()) {
+    Assign.find({'course.id': req.params.cuid,
+      visible: true
+    }, 'name tags due course', function(err, docs) {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(docs);
+      }
+    });
+  }else{
+    res.send("Request denied");
+  }
 })
 
 module.exports = router;
