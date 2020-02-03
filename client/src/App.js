@@ -8,6 +8,7 @@ import Calendar from './components/pages/Calendar.jsx';
 import Grades from './components/pages/Grades.jsx';
 import Class from './components/pages/Class.jsx';
 import LogIn from './components/pages/LogIn.jsx';
+import Assignment from './components/pages/Assignment.jsx';
 
 
 axios.defaults.withCredentials = true;
@@ -42,6 +43,7 @@ function getUser(){
             <Route exact path="/calendar"><Calendar userID={user.uid}/></Route>
             <Route exact path="/grades"><Grades/></Route>
             <Route exact path="/class/:id" render={(props) => <Class {...props} userID={user.uid} />}/>
+            <Route exact path="/class/:id/assignment/:aid" render={(props) => <Assignment {...props}/>}/>
             <Route exact path="/login"><LogIn getUser={getUser}/></Route>
             <Route exact path="/"><Dashboard userID={user.uid}/></Route>
             </AppFrame>
