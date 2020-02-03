@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import '../../styles/pages/Class.css';
 import CourseInfo from '../elements/CourseInfo.jsx';
+import Upcoming from '../blocks/Upcoming.jsx';
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 
-var catalog;
+
 
 function Class(props) {
   let courseID = props.match.params;
@@ -22,7 +23,6 @@ useEffect(() => {
         .then(res => {
           if(res){
             getCourse(res.data);
-            catalog = res.data;
           }else{
             console.log('Request denied');
           }
@@ -68,16 +68,9 @@ useEffect(() => {
               </button>
             </div>
           </div>
-
-          <div className="jumbotron jumbotron-fluid bg-light">
-            <div className="container">
-              <h3 className="upcoming-heading">Upcoming</h3>
-            </div>
-
-          </div>
+          {courseID && <Upcoming course={courseID}/>}
         </main>
   </React.Fragment>)
 }
 
 export default Class;
-export {catalog};
