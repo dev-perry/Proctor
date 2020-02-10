@@ -8,7 +8,7 @@ axios.defaults.withCredentials = true;
 
 
 function Class(props) {
-  let courseID = props.match.params;
+  const courseID = props.match.params;
   const [course, getCourse] = useState({});
   const [cModal, setShow] = useState(false);
 
@@ -21,10 +21,10 @@ useEffect(() => {
   function setCourse(){
     axios.get('http://localhost:4000/catalog/courses/' + props.userID + '/'+ courseID.id)//GET request  fires according to passed course ID
         .then(res => {
-          if(res){
+          if(res.data){
             getCourse(res.data);
           }else{
-            console.log('Request denied');
+            console.log('No data received');
           }
         })
   }
