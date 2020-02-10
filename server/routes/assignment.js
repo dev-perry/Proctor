@@ -77,4 +77,19 @@ router.get('/:cuid', function(req, res) {
   }
 })
 
+//Return data for single assignment
+router.get('/s/:aid', function(req,res){
+  if(req.isAuthenticated()){
+    Assign.findOne({_id: req.params.aid}, function(err,docs){
+      if(err){
+        res.send(err);
+      }else{
+        res.send(docs);
+      }
+    });
+  }else{
+    res.send("Request denied");
+  }
+})
+
 module.exports = router;
