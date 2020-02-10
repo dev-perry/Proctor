@@ -10,6 +10,7 @@ const assignSchema =  new Schema({
   },
   name:{type:String},
   type:{type:String},
+  desc:Schema.Types.Mixed,
   tags:{type:[String]},
   visible:{type:Boolean},
   due:{type:Date}
