@@ -1,0 +1,19 @@
+.a-desc{
+  padding-left: 23px;
+}
+.a-desc p{
+  font-size: 1rem;
+}
+.sinfo{
+  display: inline-flex;
+}
+.calendar-icon{
+  height: 1.3rem;
+  width: 1.3rem;
+}
+.due{
+  padding-left: 5px;
+}
+.tags{
+  margin-left: 10px;
+}
