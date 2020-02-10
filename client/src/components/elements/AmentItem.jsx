@@ -16,7 +16,7 @@ function AmentItem(props) {
     <h6>{aDate}</h6>
     {aData.map((element, index) => {
       return(
-    <Link to={element.course.id+"/assignment/" + element._id}><p key={index} className="justify-content-between">
+    <Link key={index} to={element.course.id+"/assignment/" + element._id}><p className="justify-content-between">
       {element.name}
     </p></Link>
   )
