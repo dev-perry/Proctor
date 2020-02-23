@@ -1,33 +1,53 @@
-import React from "react";
-import {UncontrolledCollapse} from 'reactstrap';
-import Editor from './Editor.jsx';
+import React, {useState} from "react";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
-function SubRes() {
+function SubRes(props) {
+const [text, setText] = useState("");
+
+function handleChange(value){
+  setText(value);
+}
 
   //styling
   const dstyle = {
-    position: "relative",
-    margin: "auto",
-    marginTop: "50px",
-    width: "300px",
-    height: "100px"
+    marginLeft:"24px",
+    marginRight: "60px",
+    marginTop: "30px"
   }
+
   const bstyle = {
-    position: "absolute",
-    marginTop: "25px",
-    marginLeft: "60px"
+    marginTop: "15px",
+    marginLeft: "85%",
+    width: "100px"
   }
+
+  function handleSubmit(e){
+    e.preventDefault();
+    props.sendSub(e);
+  }
+
+  //toolbar variables
+  const modules = {
+    syntax: true,
+    toolbar: [
+      [{ 'header': [1, 2, false] }],
+      ['bold', 'italic', 'underline','strike'],
+      ['blockquote', 'code-block', 'formula'],
+      [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+      ['link', 'image', 'video'],
+      ['clean']
+    ],
+  }
+
   return (
-    <>
-    <div style={dstyle}>
-    <button id="toggler" style = {bstyle} type="button" className="btn btn-primary btn-lg">Create Submission</button>
+<form onSubmit={handleSubmit}>
+  <div style={dstyle}>
+    <ReactQuill modules = {modules} theme = "snow" value={text} onChange={handleChange}/>
   </div>
-  <div>
-    <UncontrolledCollapse toggler="#toggler">
-      <Editor/>
-    </UncontrolledCollapse>
-  </div>
-</>)
+  <button style={bstyle} type="submit" className="btn btn-primary">Submit</button>
+</form>
+)
 }
 
 export default SubRes;
