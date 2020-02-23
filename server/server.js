@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
@@ -23,7 +24,7 @@ app.use(cors({
 
 //Sessions
 app.use(session({
-  secret: 'kairoisu-man', //will likely need to be environment variable
+  secret: process.env.SECRET_KEY, //will likely need to be environment variable
   store: new MongoStore({mongooseConnection: dbConnection}),
   resave: false, //this is a default requirement
   saveUninitialized: false //default requirement
