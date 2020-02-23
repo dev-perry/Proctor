@@ -92,4 +92,14 @@ router.get('/s/:aid', function(req,res){
   }
 })
 
+//Modify submission for one assignment
+router.post('/submission/:uid/:aid',function(req,res){
+  if(req.isAuthenticated()){
+    console.log(req);
+    res.send("Data caught");
+  }else{
+    res.send("Request denied");
+  }
+})
+
 module.exports = router;
