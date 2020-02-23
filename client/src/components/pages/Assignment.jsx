@@ -33,7 +33,7 @@ function Assignment(props){
         <div className="a-desc">
         <p>{aData.desc}</p>
         </div>
-        <ResArea amentType = {aData.type}/>
+        <ResArea amentType = {aData.type} uID={props.userID} aID = {aid}/>
       </main>
   )
 }
