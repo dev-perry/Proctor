@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {Redirect} from "react-router-dom";
 import axios from 'axios';
 
 function LogIn(props) {
@@ -24,7 +25,7 @@ function LogIn(props) {
       console.log('SERVER RESPONSE:');
       console.log(res);
       if (res.status === 200) {
-        props.getUser();
+        props.updateUser({loggedIn: true, username:res.data.username, uid:res.data._id});
       }
 
     }).catch(err => {
@@ -33,6 +34,10 @@ function LogIn(props) {
     })
 
   }
+
+if(props.loggedIn){
+  return <Redirect to="/"/>
+}
 
   return (
     <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
