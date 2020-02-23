@@ -1,9 +1,10 @@
 //Imports and uses mongoose package
+require('dotenv').config();
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 //Stores the url of the database, will likely have to be an environment variable
-const dbURL = 'mongodb://localhost:27017/proctorDB';
+const dbURL = 'mongodb+srv://perrydev:'+ process.env.DB_PASS +'@cluster0-xjod7.gcp.mongodb.net/ProctorDB?retryWrites=true&w=majority';
 
 mongoose.connect(dbURL, {
   useNewUrlParser: true,
