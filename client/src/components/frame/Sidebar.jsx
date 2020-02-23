@@ -19,7 +19,7 @@ function Sidebar(props){
             console.log('Get has failed');
           }
         })
-  },[])
+  },[props.userID])
 
   return(
     <nav className="col-md-2 d-none d-md-block bg-light sidebar">
