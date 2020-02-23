@@ -32,7 +32,8 @@ router.post('/', function(req, res) {
 router.post('/login', passport.authenticate('local'), function(req, res) {
   //logs users in via local strategy
   const userInfo = {
-    username: req.user.username//get the username attribute from the user object passed in the request
+    username: req.user.username,
+    id: req.user._id//get the username & id attribute from the user object passed in the request
   };
   res.send(userInfo);//fires back info object after successful login
 });
