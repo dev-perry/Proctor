@@ -1,5 +1,5 @@
 import React, { useEffect, useState} from 'react';
-import {Route, Redirect, Switch} from 'react-router-dom';
+import {Route} from 'react-router-dom';
 import axios from 'axios';
 import './styles/App.css';
 import AppFrame from './components/frame/AppFrame.jsx';
@@ -16,38 +16,43 @@ axios.defaults.withCredentials = true;
 
 function App() {
   const [user, updateUser] = useState({loggedIn: false, username: null, uid: null});
-  useEffect(() => { getUser()}, []);
-
-function getUser(){
-  axios.get('http://localhost:4000/authenticate/')
-      .then(res => {
-        if(res.data.user){
-          updateUser({loggedIn: true, username: res.data.user.username, uid: res.data.user._id});
-        }else{
-          console.log('Get user: no user');
-          updateUser({loggedIn: false, username: null, uid: null});
-        }
-      })
-}
+  useEffect(() => {
+    function getUser(){
+      axios.get('http://localhost:4000/authenticate/')
+          .then(res => {
+            if(res.data.user){
+              updateUser({loggedIn: true, username: res.data.user.username, uid: res.data.user._id});
+            }else{
+              console.log('Get user: no user');
+              updateUser({loggedIn: false, username: null, uid: null});
+            }
+          })
+    }
+    getUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user.loggedIn]);
 
     function logState(user) {
       updateUser({loggedIn: user.loggedIn, username: user.username, uid:user.uid});
       console.log("log state has been called");
     }
 
+    const PrivateRoute = ({ component: Component, userID, ...rest }) => (
+      <Route {...rest} render={(props) => (
+        user.loggedIn === true ? <Component userID={userID} {...props}/> : <LogIn {...props} updateUser={updateUser} loggedIn={user.loggedIn}/>)} />
+    )
 
       return (
-        <Switch>
+        <>
           <AppFrame user={user} logState={logState}>
-            {user.loggedIn ? <Redirect to="/"/> : <Redirect to="/login"/>}
-            <Route exact path="/calendar"><Calendar userID={user.uid}/></Route>
-            <Route exact path="/grades"><Grades/></Route>
-            <Route exact path="/class/:id" render={(props) => <Class {...props} userID={user.uid} />}/>
-            <Route exact path="/class/:id/assignment/:aid" render={(props) => <Assignment {...props}/>}/>
-            <Route exact path="/login"><LogIn getUser={getUser}/></Route>
-            <Route exact path="/"><Dashboard userID={user.uid}/></Route>
+            <PrivateRoute exact path="/" component={Dashboard} userID={user.uid}/>
+            <Route exact path="/login" render={(props) => <LogIn {...props} updateUser={updateUser} loggedIn={user.loggedIn}/>}/>
+            <PrivateRoute exact path="/calendar" component={Calendar} userID={user.uid}/>
+            <PrivateRoute exact path="/grades" component={Grades} userID={user.uid}/>
+            <PrivateRoute exact path="/class/:id" component={Class} userID={user.uid}/>
+            <PrivateRoute exact path="/class/:id/assignment/:aid" component={Assignment} userID={user.uid}/>
             </AppFrame>
-        </Switch>
+       </>
         );
 
   }
