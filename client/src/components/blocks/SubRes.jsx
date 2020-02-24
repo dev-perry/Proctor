@@ -1,14 +1,9 @@
 import React, {useState} from "react";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import axios from "axios";
+import Editor from '../tools/Editor.jsx';
 
 function SubRes(props) {
-const [text, setText] = useState("");
-
-function handleChange(value){
-  setText(value);
-}
-
+const [content, setContent] = useState(null);
   //styling
   const dstyle = {
     marginLeft:"24px",
@@ -24,26 +19,22 @@ function handleChange(value){
 
   function handleSubmit(e){
     e.preventDefault();
-    props.sendSub(e);
-  }
-
-  //toolbar variables
-  const modules = {
-    syntax: true,
-    toolbar: [
-      [{ 'header': [1, 2, false] }],
-      ['bold', 'italic', 'underline','strike'],
-      ['blockquote', 'code-block', 'formula'],
-      [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-      ['link', 'image', 'video'],
-      ['clean']
-    ],
+    axios.post('http://localhost:4000/assignment/submission/'+ props.uid +'/'+ props.aid, {date:Date(), data: content})
+    .then(
+      res => {
+        if(res){
+          console.log(res.data);
+        }else{
+          console.log('Get has failed');
+        }
+      }
+    )
   }
 
   return (
 <form onSubmit={handleSubmit}>
   <div style={dstyle}>
-    <ReactQuill modules = {modules} theme = "snow" value={text} onChange={handleChange}/>
+    <Editor content={setContent}/>
   </div>
   <button style={bstyle} type="submit" className="btn btn-primary">Submit</button>
 </form>
