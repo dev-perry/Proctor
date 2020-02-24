@@ -4,7 +4,7 @@ mongoose.promise = Promise;
 
 //document structure
 const SubmissionSchema = new Schema({
-  student_id: {type: Number, required: true},
+  student_id: {type: String, required: true},
   submittedOn: {type: Date, required: true},
   content: Schema.Types.Mixed
 });
