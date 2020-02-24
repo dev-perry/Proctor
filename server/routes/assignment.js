@@ -80,11 +80,11 @@ router.get('/:cuid', function(req, res) {
 //Return data for single assignment
 router.get('/s/:aid', function(req,res){
   if(req.isAuthenticated()){
-    Assign.findOne({_id: req.params.aid}, function(err,docs){
+    Assign.findOne({_id: req.params.aid}, function(err,doc){
       if(err){
         res.send(err);
       }else{
-        res.send(docs);
+        res.send(doc);
       }
     });
   }else{
@@ -92,11 +92,19 @@ router.get('/s/:aid', function(req,res){
   }
 })
 
-//Modify submission for one assignment
+//Create submission for one assignment
 router.post('/submission/:uid/:aid',function(req,res){
   if(req.isAuthenticated()){
-    console.log(req);
-    res.send("Data caught");
+    Assign.findOne({_id: req.params.aid}, function(err, doc){
+      if(err){
+        res.send(err);
+      }
+      else{
+        doc.submissions.push({student_id:req.params.uid, submittedOn: req.body.date, content: req.body.data});
+        doc.save();
+        res.send("Data caught");
+      }
+    });
   }else{
     res.send("Request denied");
   }
