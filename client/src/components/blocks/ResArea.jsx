@@ -28,7 +28,7 @@ function ResArea(props) {
       res = <TODOres sendSub = {sendSubmission}/>
       break;
     case "Submission":
-      res = <SubRes sendSub = {sendSubmission}/>
+      res = <SubRes sendSub = {sendSubmission} uid={uID} aid={aID}/>
       break;
 
     case "Form":
